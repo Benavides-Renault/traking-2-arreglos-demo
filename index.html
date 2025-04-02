@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAASlJREFUSEvtljEOAUEUhr+tNS4gIo6g03AIB1BouAENEuIESg7gFFQaF1A5hSjZJ0bsZGe9wdqVmG6z7/3//P+892YCMlpBRrzkjrgZ48Ra6Y4q16X4HEOidUeVmztilV0O61W5tuIC0AIqyvPUhh2AFXAyCY/ERWAHVLVonnF7oAYcJe+RuAfMPcF8wzvAwiYeAUNfJM/4cRgvPBHFP08sqmRJdTcsR1JVbOomzsH8Ersmmsxr2z5x867EUWxmjD5VnBmxKRBbQBsox6jahMVkbq9ru9yKy4xP06ZPFXu2ZyT8N4vrHcVJuala7U08AKZpSb3hCsfMntXSn9p31av7qwNbm1i+u0A/vLpKryI78uQhMAGW5r/2AffhfUSvxY+DJwH+FX/N7gvSzD4f7T4aWQAAAABJRU5ErkJggg==" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baterias Costa Rica Tracking </title>
+  <meta name="author" content="Orlando Ismael Benavides Renault">
+  <meta name="description" content="Rastreo y coordinación de servicios de asistencia técnica" />
+  <meta name="keywords" content="Tracking, Baterias, servicios, Tecnicos, Costa Rica">
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="shortcut icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAASlJREFUSEvtljEOAUEUhr+tNS4gIo6g03AIB1BouAENEuIESg7gFFQaF1A5hSjZJ0bsZGe9wdqVmG6z7/3//P+892YCMlpBRrzkjrgZ48Ra6Y4q16X4HEOidUeVmztilV0O61W5tuIC0AIqyvPUhh2AFXAyCY/ERWAHVLVonnF7oAYcJe+RuAfMPcF8wzvAwiYeAUNfJM/4cRgvPBHFP08sqmRJdTcsR1JVbOomzsH8Ersmmsxr2z5x867EUWxmjD5VnBmxKRBbQBsox6jahMVkbq9ru9yKy4xP06ZPFXu2ZyT8N4vrHcVJuala7U08AKZpSb3hCsfMntXSn9p31av7qwNbm1i+u0A/vLpKryI78uQhMAGW5r/2AffhfUSvxY+DJwH+FX/N7gvSzD4f7T4aWQAAAABJRU5ErkJggg=="
+    type="image/png">
+  <!-- Clear browser cache for Google Maps API -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <!-- Updated CSP to allow blob URLs for workers -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src * 'self' data: 'unsafe-inline' 'unsafe-eval'; script-src * 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://ajax.googleapis.com https://cdn.gpteng.co; worker-src blob: 'self'; child-src blob: 'self'; connect-src * 'self'; img-src * 'self' data: https:; frame-src * 'self'; style-src * 'self' 'unsafe-inline'; block-all-mixed-content;">
+  <!-- Styling for Google Maps Web Components -->
+  <style>
+    gmp-map {
+      height: 100%;
+      width: 100%;
+    }
+
+    gmpx-place-picker {
+      width: 100%;
+    }
+
+    .place-picker-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      padding: 12px;
+      margin: 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      width: calc(100% - 32px);
+      max-width: 400px;
+    }
+  </style>
+  <!-- Add a fixed Google Maps API Script with cached-busting parameter -->
+  <script>
+    // Initialize cache busting for Google Maps
+    window.clearMapCache = function () {
+      console.log("Clearing map cache...");
+      const timestamp = new Date().getTime();
+      window.gmapsCacheBuster = timestamp;
+    };
+
+    // Initialize function to reload Google Maps API
+    window.reloadMapsAPI = function () {
+      window.clearMapCache();
+
+      try {
+        // Remove any existing Google Maps scripts
+        const existingScripts = document.querySelectorAll('script[src*="maps.googleapis.com"]');
+        existingScripts.forEach(script => {
+          script.parentNode.removeChild(script);
+        });
+
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${window.googleMapsApiKey}&libraries=places&callback=initMap&v=weekly&_=${window.gmapsCacheBuster}`;
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+
+        console.log("Reloaded Google Maps API");
+      } catch (error) {
+        console.error("Error reloading Google Maps API:", error);
+      }
+    };
+
+    // Set up Google Maps API key
+    window.googleMapsApiKey = "AIzaSyBkYHe6H9-zXWD_tsDuRnR-bhCF0yNy1j0";
+
+    // Initialize map function (will be called by Google Maps API)
+    window.initMap = function () {
+      console.log("Google Maps API initialized successfully");
+      // This is just a placeholder. The actual initialization happens in the React components.
+      const event = new CustomEvent('googlemaps-loaded');
+      window.dispatchEvent(event);
+    };
+
+    // Detect Google Maps load errors
+    window.gm_authFailure = function () {
+      console.error("Google Maps authentication failed");
+      const event = new CustomEvent('googlemaps-auth-error');
+      window.dispatchEvent(event);
+    };
+
+    // Call the function to clear cache initially
+    window.clearMapCache();
+
+    // Load the Google Maps script on page load
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(window.reloadMapsAPI, 500);
+    });
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>
